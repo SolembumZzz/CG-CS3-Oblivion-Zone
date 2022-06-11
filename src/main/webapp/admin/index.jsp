@@ -90,11 +90,11 @@
                                     <td class="text-center">${product.getQuantity()}</td>
                                     <td>${product.isLocked() ? 'Locked' : 'Not locked'}</td>
                                     <td class="text-center">
-                                        <a class="btn btn-secondary waves-effect waves-light" title="Edit"
+                                        <a class="btn btn-outline-info waves-effect waves-light" title="Edit"
                                             href="/products?action=edit&id=${product.getId()}">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a class="btn btn-danger waves-effect waves-light" title="${product.isLocked() ? 'Unlock' : 'Lock'}"
+                                        <a class="btn btn-outline-danger waves-effect waves-light" title="${product.isLocked() ? 'Unlock' : 'Lock'}"
                                             href="${product.isLocked() ? '/products?action=unlock&id=' : '/products?action=lock&id='}${product.getId()}">
                                                 ${product.isLocked() ? '<i class="fas fa-unlock"></i>' : '<i class="fas fa-lock"></i>'}
                                         </a>

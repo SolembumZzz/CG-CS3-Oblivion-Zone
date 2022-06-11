@@ -3,10 +3,8 @@ package com.cg.service;
 import com.cg.model.Description;
 import com.cg.model.Product;
 import com.cg.utils.MySQLConnectionUtils;
-import jdk.vm.ci.code.site.Call;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
