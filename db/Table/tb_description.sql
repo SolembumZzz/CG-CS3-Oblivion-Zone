@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS `description`
+(
+    `id`        INT AUTO_INCREMENT PRIMARY KEY,
+    `producer`  VARCHAR(150) DEFAULT NULL,
+    `mainboard` VARCHAR(150) DEFAULT NULL,
+    `CPU`       VARCHAR(150) DEFAULT NULL,
+    `RAM`       VARCHAR(150) DEFAULT NULL,
+    `VGA`       VARCHAR(150) DEFAULT NULL,
+    `harddrive` VARCHAR(150) DEFAULT NULL,
+    `insurance` DECIMAL(12, 1)
+)

@@ -1,0 +1,1 @@
+<script src="${pageContext.request.contextPath}/admin/assets/izitoasts/js/iziToast.min.js" type="text/javascript"></script>

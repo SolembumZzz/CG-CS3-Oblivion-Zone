@@ -1,0 +1,1 @@
+<link rel="stylesheet" href="${pageContext.request.contextPath}/admin/assets/izitoasts/css/iziToast.min.css">
