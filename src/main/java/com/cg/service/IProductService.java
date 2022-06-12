@@ -29,4 +29,7 @@ public interface IProductService {
     HttpServletRequest processProduct(HttpServletRequest request);
 
     HttpServletRequest modifyProduct(HttpServletRequest request);
+
+    HttpServletRequest setAttProductDetail(HttpServletRequest request, Product product);
+    HttpServletRequest setAttDescription(HttpServletRequest request, Description description);
 }

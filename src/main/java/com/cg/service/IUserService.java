@@ -1,20 +1,25 @@
 package com.cg.service;
 
+import com.cg.model.Role;
 import com.cg.model.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface IUserService {
 
-    User selectUser(int id);
+    User selectUserById(int id);
 
-    ArrayList<User> selectAllUsers();
+    User selectUserByUsername(String username);
 
-    public void signIn();
+    List<User> selectAllUsers();
 
-    public void getRole(String username);
+    Role getRole(String username);
 
     boolean exist(String userName);
 
     boolean checkPassword(String username, String password);
+
+    void signUp(User newUser);
+
+    void setRole(User user, Role role);
 }

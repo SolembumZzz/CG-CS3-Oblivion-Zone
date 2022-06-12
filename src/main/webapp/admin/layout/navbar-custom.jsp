@@ -162,8 +162,6 @@
                     <i class="fi-arrow-right"></i>
                 </a>
 
-
-
             </div>
         </li>
 
@@ -172,11 +170,6 @@
                 <img src="/admin/assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
             </a>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
-                <!-- item-->
-                <div class="dropdown-header noti-title">
-                    <h6 class="text-overflow m-0">Welcome !</h6>
-                </div>
-
                 <!-- item-->
                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                     <i class="mdi mdi-account-outline"></i>
@@ -198,7 +191,7 @@
                 <div class="dropdown-divider"></div>
 
                 <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="/users?action=logOut" class="dropdown-item notify-item">
                     <i class="mdi mdi-logout-variant"></i>
                     <span>Logout</span>
                 </a>
@@ -210,7 +203,7 @@
 
     <!-- LOGO -->
     <div class="logo-box">
-        <a href="index.jsp" class="logo text-center">
+        <a href="/users" class="logo text-center">
             <span class="logo-lg">
                 <img src="/admin/assets/images/logo.png" alt="" height="30">
                 <!-- <span class="logo-lg-text-light">Zircos</span> -->

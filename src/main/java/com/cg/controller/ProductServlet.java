@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,22 +64,23 @@ public class ProductServlet extends HttpServlet {
     }
 
     public void renderProductsInclLocked(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/product-list.jsp");
 
         List<Product> productList = productService.selectAllProductsInclLocked();
 
         request.setAttribute("productList", productList);
+
         dispatcher.forward(request, response);
     }
 
     public void showCreateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/add-product.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/add-product.jsp");
 
         dispatcher.forward(request, response);
     }
 
     public void createProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/add-product.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/add-product.jsp");
 
         request = productService.processProduct(request);
 
@@ -86,24 +88,30 @@ public class ProductServlet extends HttpServlet {
     }
 
     public void showEditProductForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/edit-product.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/edit-product.jsp");
 
         String rawId = request.getParameter("id");
         List<String> errorMessages = new ArrayList<>();
-        Product product = null;
-        Description description = null;
+        Product product;
+        Description description;
 
         try {
             int id = Integer.parseInt(rawId);
             if (!productService.existById(id))
                 throw new NonExistingProduct("product not exist");
             product = productService.selectProduct(id);
-            description = productService.selectDescriptionByProductId(id);
+            request = productService.setAttProductDetail(request, product);
 
-        } catch (NumberFormatException nfe) {
-            errorMessages.add("Invalid id");
-        } catch (NonExistingProduct nep) {
+            description = productService.selectDescriptionByProductId(id);
+            if (description != null)
+                request = productService.setAttDescription(request, description);
+
+        } catch (NumberFormatException | NonExistingProduct e) {
             errorMessages.add("Product not found");
+            request.setAttribute("errorMessages", errorMessages);
+            dispatcher = request.getRequestDispatcher("/products?action=");
+            dispatcher.forward(request, response);
+            return;
         }
 
         request.setAttribute("product", product);
@@ -113,7 +121,7 @@ public class ProductServlet extends HttpServlet {
     }
 
     public void editProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/edit-product.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/edit-product.jsp");
 
         request = productService.modifyProduct(request);
 
@@ -121,7 +129,7 @@ public class ProductServlet extends HttpServlet {
     }
 
     public void lockProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/product-list.jsp");
 
         String rawId = request.getParameter("id");
         List<String> errorMessages = new ArrayList<>();
@@ -133,9 +141,7 @@ public class ProductServlet extends HttpServlet {
                 throw new NonExistingProduct("product not exist");
             productService.lockProduct(id);
             operation = "Product locked";
-        } catch (NumberFormatException nfe) {
-            errorMessages.add("Invalid id");
-        } catch (NonExistingProduct nep) {
+        } catch (NumberFormatException | NonExistingProduct e) {
             errorMessages.add("Product not found");
         }
 
@@ -147,7 +153,7 @@ public class ProductServlet extends HttpServlet {
     }
 
     public void unlockProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/product-list.jsp");
 
         String rawId = request.getParameter("id");
         List<String> errorMessages = new ArrayList<>();
@@ -160,9 +166,7 @@ public class ProductServlet extends HttpServlet {
                 throw new NonExistingProduct("product not exist");
             productService.unlockProduct(id);
             operation = "Product unlocked";
-        } catch (NumberFormatException nfe) {
-            errorMessages.add("Invalid id");
-        } catch (NonExistingProduct nep) {
+        } catch (NumberFormatException | NonExistingProduct e) {
             errorMessages.add("Product not found");
         }
 

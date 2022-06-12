@@ -13,7 +13,8 @@ public class OrderServlet extends HttpServlet {
         if (action == null)
             action = "";
         switch (action) {
-            case "create":
+            case "detail":
+                showOrderDetails(request, response);
                 break;
             default:
                 showListOrder(request, response);
@@ -27,9 +28,16 @@ public class OrderServlet extends HttpServlet {
     }
 
     private void showListOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/order-list.jsp");
+
+
+
+
+        dispatcher.forward(request, response);
+    }
+
+    private void showOrderDetails(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("");
-
-
 
         dispatcher.forward(request, response);
     }

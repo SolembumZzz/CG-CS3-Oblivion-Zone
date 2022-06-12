@@ -1,6 +1,6 @@
-﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +38,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title">Products</h4>
+                        <h4 class="page-title">Orders</h4>
                     </div>
                 </div>
             </div>
@@ -48,20 +48,13 @@
                 <div class="col-sm-12">
                     <div class="card-box table-responsive">
                         <div class="row">
-                            <div class="col-10">
-                                <h4 class="header-title"><b>All Products</b></h4>
-                                <p class="sub-header">
-                                    All products including locked ones.
-                                </p>
-                            </div>
-                            <div class="col-2">
-                                <div style="float: right">
-                                    <a class="btn btn-primary waves-effect width-md waves-light"
-                                       href="${pageContext.request.contextPath}/products?action=create">
-                                        Add product
-                                    </a>
-                                </div>
-                            </div>
+                            <h4 class="header-title"><b>All Orders</b></h4>
+                            <p class="sub-header">
+                                Nullam ultricies est eget augue semper vestibulum. Quisque lobortis venenatis
+                                suscipit. Nunc eu erat sagittis, auctor felis id, eleifend ex. Aenean nec neque a
+                                neque mollis scelerisque sed non ligula. Quisque tristique ipsum turpis, vel feugiat
+                                augue tempus ac.
+                            </p>
                         </div>
 
                         <table id="datatable-keytable" class="table table-striped table-bordered dt-responsive nowrap"
@@ -85,18 +78,13 @@
                                     <td>${product.getName()}</td>
                                     <td>${product.getCategory()}</td>
                                     <td class="text-right">
-                                        <fmt:formatNumber type="currency" pattern="#,###₫" value="${product.getPrice()}"/>
+                                        <fmt:formatNumber type="currency" pattern="#,###₫"
+                                                          value="${product.getPrice()}"/>
                                     </td>
-                                    <td class="text-center">${product.getQuantity()}</td>
-                                    <td>${product.isLocked() ? 'Locked' : 'Not locked'}</td>
                                     <td class="text-center">
-                                        <a class="btn btn-outline-info waves-effect waves-light" title="Edit"
-                                            href="/products?action=edit&id=${product.getId()}">
+                                        <a class="btn btn-outline-secondary waves-effect waves-light" title="Edit"
+                                           href="/products?action=edit&id=${product.getId()}">
                                             <i class="fas fa-pen"></i>
-                                        </a>
-                                        <a class="btn btn-outline-danger waves-effect waves-light" title="${product.isLocked() ? 'Unlock' : 'Lock'}"
-                                            href="${product.isLocked() ? '/products?action=unlock&id=' : '/products?action=lock&id='}${product.getId()}">
-                                                ${product.isLocked() ? '<i class="fas fa-unlock"></i>' : '<i class="fas fa-lock"></i>'}
                                         </a>
                                     </td>
                                 </tr>
@@ -126,33 +114,21 @@
 <!-- END wrapper -->
 
 <%@ include file="/admin/layout/script/izi-toasts.jsp" %>
-<%@ include file="/admin/layout/script/izi.toasts-operation-success.jsp"%>
-<%@ include file="/admin/layout/script/izi-toats-show-errors.jsp"%>
+<%@ include file="/admin/layout/script/izi.toasts-operation-success.jsp" %>
+<%@ include file="/admin/layout/script/izi-toats-show-errors.jsp" %>
 
 <script src="${pageContext.request.contextPath}/admin/assets/js/vendor.min.js"></script>
 <%@ include file="/admin/layout/script/datatable.jsp" %>
 <%@ include file="/admin/layout/script/libs-app.jsp" %>
 
-<script src="${pageContext.request.contextPath}/admin/assets/js/app.min.js"></script>\
+<script src="${pageContext.request.contextPath}/admin/assets/js/app.min.js"></script>
+\
 
 <script>
-
-    /*document.addEventListener("DOMContentLoaded", function () {
+    $(document).ready(function () {
         console.log("ready....");
         document.getElementById("action").classList.remove("sorting");
-    });*/
-   $(document).ready(function () {
-       console.log("ready....");
-       document.getElementById("action").classList.remove("sorting");
-
-       // $("action").off("change");
-       // document.getElementById("action").removeEventListener("click", ()=>{
-       //     console.log("remove click")
-       // });
-       // document.getElementById("action").removeEventListener("change", ()=>{
-       //     console.log("remove click")
-       // });
-   });
+    });
 </script>
 </body>
 

@@ -58,11 +58,12 @@ public class ProductService implements IProductService {
             while (rs.next()) {
                 String name = rs.getString("product_name");
                 BigDecimal price = rs.getBigDecimal("price");
+                int quantity =rs.getInt("quantity");
                 int description = rs.getInt("description");
                 String category = rs.getString("category");
                 boolean locked = rs.getBoolean("locked");
 
-                product = new Product(id, name, price, description, category, locked);
+                product = new Product(id, name, price, quantity, description, category, locked);
             }
 
         } catch (SQLException e) {
@@ -391,10 +392,14 @@ public class ProductService implements IProductService {
 
     @Override
     public HttpServletRequest modifyProduct(HttpServletRequest request) {
+        String operation = null;
         List<String> errorMessages = new ArrayList<>();
         BigDecimal price = BigDecimal.ZERO;
         int quantity = 0;
         BigDecimal insurance = null;
+
+        int productId = Integer.parseInt(request.getParameter("id"));
+        int descriptionId = selectProduct(productId).getDescription();
 
         String name = request.getParameter("productName");
         String rawPrice = request.getParameter("productPrice");
@@ -501,11 +506,36 @@ public class ProductService implements IProductService {
         }
 
         //update
-        Product updatedProduct = new Product(name, price, quantity, category);
-        Description updatedDescription = new Description(brand, mainboard, CPU, RAM, VGA, harddrive, insurance);
+        Product updatedProduct = new Product(productId, name, price, quantity, category);
+        Description updatedDescription = new Description(descriptionId, brand, mainboard, CPU, RAM, VGA, harddrive, insurance);
         if (!updateProduct(updatedProduct, updatedDescription))
             errorMessages.add("An error has occurred.");
+        operation = "Product updated";
+        request.setAttribute("operation", operation);
         request.setAttribute("errorMessages", errorMessages);
+        return request;
+    }
+
+    @Override
+    public HttpServletRequest setAttProductDetail(HttpServletRequest request, Product product) {
+        request.setAttribute("name", product.getName());
+        request.setAttribute("price", product.getPrice());
+        request.setAttribute("quantity", product.getQuantity());
+        request.setAttribute("category", product.getCategory());
+
+        return request;
+    }
+
+    @Override
+    public HttpServletRequest setAttDescription(HttpServletRequest request, Description description) {
+        request.setAttribute("brand", description.getBrand());
+        request.setAttribute("mainboard", description.getBrand());
+        request.setAttribute("CPU", description.getCPU());
+        request.setAttribute("RAM", description.getRAM());
+        request.setAttribute("VGA", description.getVGA());
+        request.setAttribute("harddrive", description.getHarddrive());
+        request.setAttribute("insurance", description.getInsurance());
+
         return request;
     }
 }

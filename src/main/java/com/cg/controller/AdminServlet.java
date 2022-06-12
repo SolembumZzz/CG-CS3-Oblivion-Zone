@@ -9,7 +9,7 @@ import java.io.IOException;
 public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/index.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product-list.jsp");
 
         String action = "";
 
