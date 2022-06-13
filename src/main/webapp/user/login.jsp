@@ -5,7 +5,7 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>CodePen - A Pen by Mohithpoojary</title>
+  <title>CodePen</title>
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css'>
   <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css'>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/user/assets/login/style.css">
@@ -47,6 +47,7 @@
 <!-- partial -->
 
 <%@ include file="/admin/layout/script/izi-toasts.jsp" %>
+<%@ include file="/admin/layout/script/izi.toasts-operation-success.jsp" %>
 <%@ include file="/admin/layout/script/izi-toats-show-errors.jsp"%>
 </body>
 </html>

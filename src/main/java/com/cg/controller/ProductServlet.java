@@ -3,7 +3,9 @@ package com.cg.controller;
 import com.cg.model.Description;
 import com.cg.model.Product;
 import com.cg.service.IProductService;
+import com.cg.service.IUserService;
 import com.cg.service.ProductService;
+import com.cg.service.UserService;
 import com.cg.utils.exception.NonExistingProduct;
 
 import javax.servlet.RequestDispatcher;
@@ -12,7 +14,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +22,19 @@ import java.util.List;
 public class ProductServlet extends HttpServlet {
 
     IProductService productService = new ProductService();
+    IUserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if (action == null)
             action = "";
+        if (!userService.isAuthorized(request))
+            action = "unauthorized";
         switch (action) {
+            case "unauthorized":
+                processUnauthorizedAccess(request, response);
+                break;
             case "create":
                 showCreateForm(request, response);
                 break;
@@ -63,7 +70,17 @@ public class ProductServlet extends HttpServlet {
         }
     }
 
-    public void renderProductsInclLocked(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processUnauthorizedAccess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        List<String> errorMessages = new ArrayList<>();
+        errorMessages.add("Please sign in");
+        errorMessages.add("Access denied");
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/users");
+        request.setAttribute("errorMessages", errorMessages);
+        dispatcher.forward(request, response);
+    }
+
+    private void renderProductsInclLocked(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/product-list.jsp");
 
         List<Product> productList = productService.selectAllProductsInclLocked();
@@ -73,13 +90,13 @@ public class ProductServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    public void showCreateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void showCreateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/add-product.jsp");
 
         dispatcher.forward(request, response);
     }
 
-    public void createProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void createProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/add-product.jsp");
 
         request = productService.processProduct(request);
@@ -87,7 +104,7 @@ public class ProductServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    public void showEditProductForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void showEditProductForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/edit-product.jsp");
 
         String rawId = request.getParameter("id");
@@ -120,7 +137,7 @@ public class ProductServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    public void editProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void editProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/edit-product.jsp");
 
         request = productService.modifyProduct(request);
@@ -128,7 +145,7 @@ public class ProductServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    public void lockProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void lockProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/product-list.jsp");
 
         String rawId = request.getParameter("id");
@@ -152,7 +169,7 @@ public class ProductServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    public void unlockProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void unlockProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/product/product-list.jsp");
 
         String rawId = request.getParameter("id");

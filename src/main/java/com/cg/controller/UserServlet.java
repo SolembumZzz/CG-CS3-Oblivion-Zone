@@ -27,6 +27,8 @@ public class UserServlet extends HttpServlet {
                 break;
             case "signUp":
                 break;
+            case "showUsers":
+                break;
             default:
                 showSignInForm(request, response);
                 break;
@@ -47,13 +49,19 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    public void showSignInForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void showSignInForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/user/login.jsp");
+        String operation = null;
+
+        if (this.getServletContext().getAttribute("operation") != null)
+            operation = (String) this.getServletContext().getAttribute("operation");
+        request.setAttribute("operation", operation);
+        this.getServletContext().removeAttribute("operation");
 
         dispatcher.forward(request, response);
     }
 
-    public void signIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void signIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("/user/login.jsp");
 
         List<String> errorMessages = new ArrayList<>();
@@ -78,11 +86,16 @@ public class UserServlet extends HttpServlet {
         response.sendRedirect("/products");
     }
 
-    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+    private void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         session.invalidate();
 
+        String operation = "Have a good day";
+        getServletContext().setAttribute("operation", operation);
         response.sendRedirect("/users");
+    }
+
+    private void showUser(HttpServletRequest request, HttpServletResponse response) {
+
     }
 }

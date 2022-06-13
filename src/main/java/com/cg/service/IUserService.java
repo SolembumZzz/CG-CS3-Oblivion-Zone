@@ -3,6 +3,7 @@ package com.cg.service;
 import com.cg.model.Role;
 import com.cg.model.User;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface IUserService {
@@ -22,4 +23,8 @@ public interface IUserService {
     void signUp(User newUser);
 
     void setRole(User user, Role role);
+
+    boolean isAuthorized(HttpServletRequest request);
+
+    boolean isBlocked(String username);
 }
