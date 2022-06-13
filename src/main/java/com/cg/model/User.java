@@ -15,6 +15,12 @@ public class User {
         this.isBlocked = isBlocked;
     }
 
+    public User(int id, String username, Role role) {
+        this.id = id;
+        this.username = username;
+        this.role = role;
+    }
+
     public int getId() {
         return id;
     }

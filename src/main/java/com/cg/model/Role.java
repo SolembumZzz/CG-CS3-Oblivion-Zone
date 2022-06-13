@@ -2,7 +2,7 @@ package com.cg.model;
 
 public enum Role {
     ADMIN(1),
-    CUSTOMER(2);
+    SUBADMIN(2);
 
     private final int value;
 

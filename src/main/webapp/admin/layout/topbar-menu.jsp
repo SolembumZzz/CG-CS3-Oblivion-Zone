@@ -11,14 +11,14 @@
     <ul class="navigation-menu">
 
       <li>
-        <a href="/orders">
+        <a href="${pageContext.request.contextPath}/users?action=show">
           <i class="fas fa-user-friends"></i>
           Users
         </a>
       </li>
 
       <li>
-        <a href="/products">
+        <a href="${pageContext.request.contextPath}/products">
           <i class="fas fa-box"></i>
           Products
         </a>

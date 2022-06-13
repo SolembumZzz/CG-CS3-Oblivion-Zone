@@ -17,16 +17,16 @@
 <div class="container">
   <div class="screen">
     <div class="screen__content">
-      <form method="post" class="login">
+      <form method="post" action="/users" class="login">
         <div class="login__field">
           <i class="login__icon fas fa-user"></i>
-          <input type="text" class="login__input" placeholder="User name / Email"
+          <input type="text" class="login__input" placeholder="User name / Email" required
                  id="username" name="username" value="${username}">
         </div>
 
         <div class="login__field">
           <i class="login__icon fas fa-lock"></i>
-          <input type="password" class="login__input" placeholder="Password"
+          <input type="password" class="login__input" placeholder="Password" required
                  id="password" name="password" value="${password}">
         </div>
 

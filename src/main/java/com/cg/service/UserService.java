@@ -17,8 +17,12 @@ public class UserService implements IUserService {
 
     private static final String SELECT_USER_BY_ID_SQL = "SELECT * FROM shop_manager.users AS u WHERE u.id = ?";
     private static final String SELECT_USER_BY_USERNAME_SQL = "SELECT * FROM shop_manager.users AS u WHERE u.username = ?";
-    private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM shop_manager.users";
-    private static final String CHECK_IF_BLOCKED = "SELECT `blocked` FROM shop_manager.users AS u WHERE u.`username` = ?";
+    private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM shop_manager.users AS u WHERE u.blocked = 0";
+    private static final String CHECK_IF_BLOCKED_SQL = "SELECT `blocked` FROM shop_manager.users AS u WHERE u.`username` = ?";
+    private static final String BLOCK_USER_SQL =
+            "UPDATE users " +
+                    "SET users.blocked = 1 " +
+                    "WHERE users.id = ?";
 
 
     @Override
@@ -81,11 +85,9 @@ public class UserService implements IUserService {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String username = rs.getString("username");
-                String password = rs.getString("password");
                 Role role = Role.parseRole(rs.getInt("role"));
-                boolean isBlocked = rs.getBoolean("blocked");
 
-                userList.add(new User(id, username, password, role, isBlocked));
+                userList.add(new User(id, username, role));
             }
         } catch (SQLException e) {
             MySQLConnectionUtils.printSQLException(e);
@@ -121,7 +123,10 @@ public class UserService implements IUserService {
     @Override
     public boolean isAuthorized(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        String username = session.getAttribute("username").toString();
+        Object rawUsername = session.getAttribute("username");
+        if (rawUsername == null)
+            return false;
+        String username = rawUsername.toString();
         if (!exist(username))
             return false;
         return !isBlocked(username);
@@ -131,7 +136,7 @@ public class UserService implements IUserService {
     public boolean isBlocked(String username) {
         try {
             Connection conn = MySQLConnectionUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(CHECK_IF_BLOCKED);
+            PreparedStatement ps = conn.prepareStatement(CHECK_IF_BLOCKED_SQL);
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
@@ -142,5 +147,18 @@ public class UserService implements IUserService {
             MySQLConnectionUtils.printSQLException(e);
         }
         return false;
+    }
+
+    @Override
+    public void blockUser(int id) {
+        try {
+            Connection conn = MySQLConnectionUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(BLOCK_USER_SQL);
+            ps.setInt(1, id);
+
+            ps.execute();
+        } catch (SQLException e) {
+            MySQLConnectionUtils.printSQLException(e);
+        }
     }
 }

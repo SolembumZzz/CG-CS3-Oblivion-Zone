@@ -27,4 +27,6 @@ public interface IUserService {
     boolean isAuthorized(HttpServletRequest request);
 
     boolean isBlocked(String username);
+
+    void blockUser(int id);
 }

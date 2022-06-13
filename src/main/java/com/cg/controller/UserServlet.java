@@ -3,6 +3,8 @@ package com.cg.controller;
 import com.cg.model.User;
 import com.cg.service.IUserService;
 import com.cg.service.UserService;
+import com.cg.utils.exception.NonExistingProduct;
+import com.cg.utils.exception.NonExistingUser;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -27,8 +29,11 @@ public class UserServlet extends HttpServlet {
                 break;
             case "signUp":
                 break;
-            case "showUsers":
+            case "show":
+                showUsers(request, response);
                 break;
+            case "block":
+                blockUser(request, response);
             default:
                 showSignInForm(request, response);
                 break;
@@ -95,7 +100,37 @@ public class UserServlet extends HttpServlet {
         response.sendRedirect("/users");
     }
 
-    private void showUser(HttpServletRequest request, HttpServletResponse response) {
+    private void showUsers(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/user/user-list.jsp");
+        List<User> userList = userService.selectAllUsers();
 
+        HttpSession session = request.getSession();
+        session.removeAttribute("operation");
+        request.setAttribute("userList", userList);
+        dispatcher.forward(request, response);
+    }
+
+    private void blockUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/user/user-list.jsp");
+
+        String rawId = request.getParameter("id");
+        List<String> errorMessages = new ArrayList<>();
+        String operation = null;
+
+        try {
+            int id = Integer.parseInt(rawId);
+            if (userService.selectUserById(id) == null)
+                throw new NonExistingUser("user no exist");
+            userService.blockUser(id);
+            operation = "User blocked";
+        } catch (NonExistingUser | NumberFormatException e) {
+            errorMessages.add("User not found");
+        }
+
+        List<User> userList = userService.selectAllUsers();
+        request.setAttribute("operation", operation);
+        request.setAttribute("userList", userList);
+        request.setAttribute("errorMessages", errorMessages);
+        dispatcher.forward(request, response);
     }
 }

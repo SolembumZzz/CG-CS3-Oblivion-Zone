@@ -75,7 +75,7 @@
                                 <th>Price</th>
                                 <th class="col-1">Quantity</th>
                                 <th class="col-1">Locked</th>
-                                <th class="col-1" id="action">Action</th>
+                                <th class="col-1 text-center" id="action">Action</th>
                             </tr>
                             </thead>
 
