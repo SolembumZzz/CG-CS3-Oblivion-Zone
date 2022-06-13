@@ -3,6 +3,7 @@ package com.cg.controller;
 import com.cg.model.User;
 import com.cg.service.IUserService;
 import com.cg.service.UserService;
+import com.cg.utils.exception.BlockedUserException;
 import com.cg.utils.exception.NonExistingProduct;
 import com.cg.utils.exception.NonExistingUser;
 
@@ -121,10 +122,14 @@ public class UserServlet extends HttpServlet {
             int id = Integer.parseInt(rawId);
             if (userService.selectUserById(id) == null)
                 throw new NonExistingUser("user no exist");
+            if (userService.isBlocked(userService.selectUserById(id).getUsername()))
+                throw new BlockedUserException("user blocked");
             userService.blockUser(id);
             operation = "User blocked";
         } catch (NonExistingUser | NumberFormatException e) {
             errorMessages.add("User not found");
+        } catch (BlockedUserException bue) {
+            errorMessages.add("User already blocked");
         }
 
         List<User> userList = userService.selectAllUsers();
