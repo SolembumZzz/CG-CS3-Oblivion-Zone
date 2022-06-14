@@ -129,7 +129,6 @@
 <%@ include file="/admin/layout/script/izi-toasts.jsp" %>
 <%@ include file="/admin/layout/script/izi.toasts-operation-success.jsp"%>
 <%@ include file="/admin/layout/script/izi-toats-show-errors.jsp"%>
-
 <script src="${pageContext.request.contextPath}/admin/assets/js/vendor.min.js"></script>
 <%@ include file="/admin/layout/script/datatable.jsp" %>
 <%@ include file="/admin/layout/script/libs-app.jsp" %>

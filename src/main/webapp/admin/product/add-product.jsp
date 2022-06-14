@@ -152,7 +152,7 @@
                                     <div class="form-group row">
                                         <label class="col-lg-2" for="insurance">Insurance</label>
                                         <div class="col-lg-10">
-                                            <input type="text" class="form-control" placeholder="min 0, max 120 months"
+                                            <input type="number" class="form-control" placeholder="min 0, max 120 months"
                                                    name="insurance" id="insurance"
                                                    value="${insurance}">
                                         </div>

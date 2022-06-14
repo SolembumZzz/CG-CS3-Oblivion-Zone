@@ -68,7 +68,7 @@
                                 <div class="form-group row align-items-center">
                                     <label class="col-lg-2" for="productPrice">Price*</label>
                                     <div class="col-lg-10">
-                                        <input type="text" class="form-control"
+                                        <input type="number" class="form-control"
                                                placeholder="min 20.000vnd, max 100.000.000vnd"
                                                name="productPrice" id="productPrice" required
                                                value="${price}">
@@ -78,7 +78,7 @@
                                 <div class="form-group row align-items-center">
                                     <label class="col-lg-2" for="productQuantity">Quantity*</label>
                                     <div class="col-lg-10">
-                                        <input type="text" class="form-control" placeholder="min 1, max 5.000"
+                                        <input type="number" class="form-control" placeholder="min 1, max 5.000"
                                                name="productQuantity" id="productQuantity" required
                                                value="${quantity}">
                                     </div>
@@ -149,7 +149,7 @@
                                 <div class="form-group row align-items-center">
                                     <label class="col-lg-2" for="insurance">Insurance</label>
                                     <div class="col-lg-10">
-                                        <input type="text" class="form-control" placeholder="min 0, max 120 months"
+                                        <input type="number" class="form-control" placeholder="min 0, max 120 months"
                                                name="insurance" id="insurance"
                                                value="${insurance}">
                                     </div>
